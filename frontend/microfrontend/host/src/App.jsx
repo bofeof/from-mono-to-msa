@@ -27,9 +27,23 @@ const Profile = lazy(() =>
   })
 );
 
+const Cards = lazy(() =>
+  import("../../cards/src/components/Cards").catch(() => {
+    return {
+      default: () => <div className="error">Component is not available!</div>,
+    };
+  })
+);
+
+const Auth = lazy(() =>
+  import("../../auth/src/components/Auth").catch(() => {
+    return {
+      default: () => <div className="error">Component is not available!</div>,
+    };
+  })
+);
 
 const App = () => {
-
   function onSignOut() {
     // // при вызове обработчика onSignOut происходит удаление jwt
     // localStorage.removeItem("jwt");
@@ -38,9 +52,16 @@ const App = () => {
     // history.push("/signin");
   }
 
- function onEditProfile() {}
- function onAddPlace() {}
- function onEditAvatar() {}
+  function onEditProfile() {}
+  function onAddPlace() {}
+  function onEditAvatar() {}
+
+  function onCardClick() {}
+  function onCardLike() {}
+  function onCardDelete() {}
+
+  function onLogin() {}
+  function onRegister() {}
 
   return (
     <div className="app page">
@@ -50,15 +71,29 @@ const App = () => {
         </Suspense>
 
         <Suspense fallback="loading…">
-          <Profile onEditProfile = {onEditProfile} onAddPlace = {onAddPlace} onEditAvatar = {onEditAvatar} />
+          <Auth onLogin={onLogin} onRegister={onRegister} />
         </Suspense>
 
-        
+        <Suspense fallback="loading…">
+          <Profile
+            onEditProfile={onEditProfile}
+            onAddPlace={onAddPlace}
+            onEditAvatar={onEditAvatar}
+          />
+        </Suspense>
+
+        <Suspense fallback="loading…">
+          <Cards
+            cards
+            onCardClick={onCardClick}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
+          />
+        </Suspense>
 
         <Suspense fallback="loading…">
           <Footer />
         </Suspense>
-
       </BrowserRouter>
     </div>
   );

@@ -36,9 +36,7 @@ module.exports = {
         },
       },
       {
-        // для изображений
         test: /\.(png|svg|jpg|gif)$/,
-        //переносить исходные файлы в конечную сборку в том же формате
         type: "asset/resource",
         generator: {
           filename: "images/[hash][ext][query]",
@@ -52,9 +50,12 @@ module.exports = {
       name: "host",
       filename: "remoteEntry.js",
       remotes: {
-        header: "users@http://localhost:8084/remoteEntry.js",
         footer: "users@http://localhost:8083/remoteEntry.js",
-        profile: "users@http://localhost:8085/remoteEntry.js"
+        cards: "users@http://localhost:8082/remoteEntry.js",
+        header: "users@http://localhost:8084/remoteEntry.js",
+        profile: "users@http://localhost:8085/remoteEntry.js",
+        auth: "auth@http://localhost:8085/remoteEntry.js"
+
       },
       exposes: {},
       shared: {
