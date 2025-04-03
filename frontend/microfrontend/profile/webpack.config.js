@@ -13,6 +13,10 @@ module.exports = {
 
   devServer: {
     port: 8085,
+    historyApiFallback: true, 
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
 
   module: {
@@ -37,22 +41,21 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'images/[hash][ext][query]',
+          filename: "images/[hash][ext][query]",
         },
       },
-
     ],
   },
 
   plugins: [
     new ModuleFederationPlugin({
-      name: "user",
+      name: "profile",
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './Profile': './src/components/Profile'
+        "./Profile": "./src/components/Profile.jsx",
       },
       shared: {
         ...deps,

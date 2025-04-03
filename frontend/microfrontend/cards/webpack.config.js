@@ -13,6 +13,10 @@ module.exports = {
 
   devServer: {
     port: 8082,
+    historyApiFallback: true, 
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
 
   module: {
@@ -35,6 +39,13 @@ module.exports = {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "images/[hash][ext][query]",
+        },
+      },
     ],
   },
 
@@ -44,7 +55,7 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './Cards': './components/Cards'
+        './Cards': './src/components/Cards.jsx'
       },
       shared: {
         ...deps,
@@ -56,6 +67,7 @@ module.exports = {
           singleton: true,
           requiredVersion: deps["react-dom"],
         },
+        crossOriginLoading: "anonymous",
       },
     }),
     new HtmlWebPackPlugin({

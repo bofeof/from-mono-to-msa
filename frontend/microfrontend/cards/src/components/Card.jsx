@@ -1,7 +1,7 @@
 import React from "react";
 import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
 
-import "./index.css";
+import "./card/card.css";
 
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const cardStyle = { backgroundImage: `url(${card.link})` };

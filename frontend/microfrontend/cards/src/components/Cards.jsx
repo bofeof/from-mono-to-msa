@@ -1,17 +1,20 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 import "./index.css";
 import Card from "./Card";
 
-export default function Cards({ cards, onCardClick, onCardLike, onCardDelete })
-{
+export default function Cards() {
+  // TODO: дописать
+  const cards = []; // tmp
 
-    cards = null // tmp
+  const onCardClick = () => {};
+  const onCardLike = () => {};
+  const onCardDelete = () => {};
+
   return (
     <section className="places page__section">
       <ul className="places__list">
-        {cards?.map((card) => (
+        {cards.map((card) => (
           <Card
             key={card._id}
             card={card}

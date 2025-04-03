@@ -36,15 +36,12 @@ module.exports = {
         },
       },
       {
-        // для изображений
         test: /\.(png|svg|jpg|gif)$/,
-        //переносить исходные файлы в конечную сборку в том же формате
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'images/[hash][ext][query]',
+          filename: "images/[hash][ext][query]",
         },
       },
-
     ],
   },
 
@@ -54,7 +51,7 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './Header': './src/components/Header.jsx',
+        "./Header": "./src/components/Header.jsx",
       },
       shared: {
         ...deps,
@@ -66,6 +63,10 @@ module.exports = {
           singleton: true,
           requiredVersion: deps["react-dom"],
         },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
+        }
       },
     }),
     new HtmlWebPackPlugin({

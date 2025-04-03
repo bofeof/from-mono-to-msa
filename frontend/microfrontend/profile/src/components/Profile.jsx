@@ -4,7 +4,10 @@ import defailtUserPic from "../../../shared/styles/images/avatar.jpg";
 
 import "./index.css";
 
-export default function Profile({ onEditProfile, onAddPlace, onEditAvatar }) {
+export default function Profile() {
+  const onEditProfile = () => {};
+  const onAddPlace = () => {};
+  const onEditAvatar = () => {};
 
   const imageStyleDefault = { backgroundImage: `url(${defailtUserPic})` };
 

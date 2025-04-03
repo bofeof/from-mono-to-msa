@@ -13,6 +13,10 @@ module.exports = {
 
   devServer: {
     port: 8080,
+    historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
 
   module: {
@@ -50,12 +54,11 @@ module.exports = {
       name: "host",
       filename: "remoteEntry.js",
       remotes: {
-        footer: "users@http://localhost:8083/remoteEntry.js",
-        cards: "users@http://localhost:8082/remoteEntry.js",
-        header: "users@http://localhost:8084/remoteEntry.js",
-        profile: "users@http://localhost:8085/remoteEntry.js",
-        auth: "auth@http://localhost:8085/remoteEntry.js"
-
+        auth: "auth@http://localhost:8081/remoteEntry.js",
+        cards: "cards@http://localhost:8082/remoteEntry.js",
+        footer: "footer@http://localhost:8083/remoteEntry.js",
+        header: "header@http://localhost:8084/remoteEntry.js",
+        profile: "profile@http://localhost:8085/remoteEntry.js",
       },
       exposes: {},
       shared: {
@@ -68,6 +71,11 @@ module.exports = {
           singleton: true,
           requiredVersion: deps["react-dom"],
         },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
+        },
+        crossOriginLoading: "anonymous",
       },
     }),
     new HtmlWebPackPlugin({

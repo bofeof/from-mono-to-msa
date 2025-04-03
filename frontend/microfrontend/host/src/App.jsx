@@ -1,10 +1,14 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+
 import "./index.css";
 
+// import api from "./utils/api";
+// import { CurrentUserContext } from "../../shared/contexts/CurrentUserContext";
+
 const Header = lazy(() =>
-  import("../../header/src/components/Header").catch(() => {
+  import("header/Header").catch(() => {
     return {
       default: () => <div className="error">Component is not available!</div>,
     };
@@ -12,7 +16,7 @@ const Header = lazy(() =>
 );
 
 const Footer = lazy(() =>
-  import("../../footer/src/components/Footer").catch(() => {
+  import("footer/Footer").catch(() => {
     return {
       default: () => <div className="error">Component is not available!</div>,
     };
@@ -20,7 +24,7 @@ const Footer = lazy(() =>
 );
 
 const Profile = lazy(() =>
-  import("../../profile/src/components/Profile").catch(() => {
+  import("profile/Profile").catch(() => {
     return {
       default: () => <div className="error">Component is not available!</div>,
     };
@@ -28,15 +32,23 @@ const Profile = lazy(() =>
 );
 
 const Cards = lazy(() =>
-  import("../../cards/src/components/Cards").catch(() => {
+  import("cards/Cards").catch(() => {
     return {
       default: () => <div className="error">Component is not available!</div>,
     };
   })
 );
 
-const Auth = lazy(() =>
-  import("../../auth/src/components/Auth").catch(() => {
+const Login = lazy(() =>
+  import("auth/Login").catch(() => {
+    return {
+      default: () => <div className="error">Component is not available!</div>,
+    };
+  })
+);
+
+const Register = lazy(() =>
+  import("auth/Register").catch(() => {
     return {
       default: () => <div className="error">Component is not available!</div>,
     };
@@ -44,58 +56,78 @@ const Auth = lazy(() =>
 );
 
 const App = () => {
-  function onSignOut() {
-    // // при вызове обработчика onSignOut происходит удаление jwt
-    // localStorage.removeItem("jwt");
-    // setIsLoggedIn(false);
-    // // После успешного вызова обработчика onSignOut происходит редирект на /signin
-    // history.push("/signin");
-  }
+  // function onSignOut() {
+  // // при вызове обработчика onSignOut происходит удаление jwt
+  // localStorage.removeItem("jwt");
+  // setIsLoggedIn(false);
+  // // После успешного вызова обработчика onSignOut происходит редирект на /signin
+  // history.push("/signin");
+  // }
 
-  function onEditProfile() {}
-  function onAddPlace() {}
-  function onEditAvatar() {}
+  // function onEditProfile() {}
+  // function onAddPlace() {}
+  // function onEditAvatar() {}
 
-  function onCardClick() {}
-  function onCardLike() {}
-  function onCardDelete() {}
+  // function onCardClick() {}
+  // function onCardLike() {}
+  // function onCardDelete() {}
 
-  function onLogin() {}
-  function onRegister() {}
+  // const [currentUser, setCurrentUser] = React.useState({});
+  // const [cards, setCards] = React.useState([]);
+
+  // React.useEffect(() => {
+  //   api
+  //     .getAppInfo()
+  //     .then(([cardData, userData]) => {
+  //       setCurrentUser(userData);
+  //       setCards(cardData);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  // const [jwt, setJwt] = useState("");
+
+  // const handleJwtChange = (event) => {
+  //   // Эта функция получает нотификации о событиях изменения jwt
+  //   setJwt(event.detail);
+  // };
+
+  useEffect(() => {
+    // addEventListener("jwt-change", handleJwtChange); // Этот код добавляет подписку на нотификации о событиях изменения localStorage
+    // return () => removeEventListener("jwt-change", handleJwtChange); // Этот код удаляет подписку на нотификации о событиях изменения localStorage, когда в ней пропадает необходимость
+  }, []);
 
   return (
-    <div className="app page">
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="page">
         <Suspense fallback="loading…">
-          <Header onSignOut={onSignOut} />
+          <Header></Header>
         </Suspense>
 
         <Suspense fallback="loading…">
-          <Auth onLogin={onLogin} onRegister={onRegister} />
+          <Profile></Profile>
+        </Suspense>
+        <Switch>
+          <Route path="/signin">
+            <Suspense fallback="loading…">
+              <Login></Login>
+            </Suspense>
+          </Route>
+          <Route path="/signup">
+            <Suspense fallback="loading…">
+              <Register></Register>
+            </Suspense>
+          </Route>
+        </Switch>
+        <Suspense fallback="loading…">
+          <Cards />
         </Suspense>
 
         <Suspense fallback="loading…">
-          <Profile
-            onEditProfile={onEditProfile}
-            onAddPlace={onAddPlace}
-            onEditAvatar={onEditAvatar}
-          />
+          <Footer></Footer>
         </Suspense>
-
-        <Suspense fallback="loading…">
-          <Cards
-            cards
-            onCardClick={onCardClick}
-            onCardLike={onCardLike}
-            onCardDelete={onCardDelete}
-          />
-        </Suspense>
-
-        <Suspense fallback="loading…">
-          <Footer />
-        </Suspense>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 };
 

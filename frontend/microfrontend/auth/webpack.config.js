@@ -43,7 +43,10 @@ module.exports = {
       name: "auth",
       filename: "remoteEntry.js",
       remotes: {},
-      exposes: {},
+      exposes: {
+        './Register': './src/components/Register.jsx',
+        './Login': './src/components/Login.jsx'
+      },
       shared: {
         ...deps,
         react: {
@@ -54,6 +57,11 @@ module.exports = {
           singleton: true,
           requiredVersion: deps["react-dom"],
         },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
+        },
+        crossOriginLoading: "anonymous",
       },
     }),
     new HtmlWebPackPlugin({

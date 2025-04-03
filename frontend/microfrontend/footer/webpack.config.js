@@ -13,6 +13,10 @@ module.exports = {
 
   devServer: {
     port: 8083,
+    historyApiFallback: true, 
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
   },
 
   module: {
