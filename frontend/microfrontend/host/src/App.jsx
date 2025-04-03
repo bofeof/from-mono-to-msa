@@ -2,10 +2,12 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ReactDOM from "react-dom";
 
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 import "./index.css";
 
-// import api from "./utils/api";
-// import { CurrentUserContext } from "../../shared/contexts/CurrentUserContext";
+import api from "./utils/api";
+import { CurrentUserContext } from "../../shared/contexts/CurrentUserContext";
 
 const Header = lazy(() =>
   import("header/Header").catch(() => {
@@ -85,7 +87,7 @@ const App = () => {
   //     .catch((err) => console.log(err));
   // }, []);
 
-  // const [jwt, setJwt] = useState("");
+  const [jwt, setJwt] = useState("");
 
   // const handleJwtChange = (event) => {
   //   // Эта функция получает нотификации о событиях изменения jwt
@@ -100,32 +102,43 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="page">
-        <Suspense fallback="loading…">
-          <Header></Header>
-        </Suspense>
+        <div className="page__content">
+          <Suspense fallback="loading…">
+            <Header></Header>
+          </Suspense>
 
-        <Suspense fallback="loading…">
-          <Profile></Profile>
-        </Suspense>
-        <Switch>
-          <Route path="/signin">
-            <Suspense fallback="loading…">
-              <Login></Login>
-            </Suspense>
-          </Route>
-          <Route path="/signup">
-            <Suspense fallback="loading…">
-              <Register></Register>
-            </Suspense>
-          </Route>
-        </Switch>
-        <Suspense fallback="loading…">
-          <Cards />
-        </Suspense>
+          <Switch>
+            <ProtectedRoute
+              exact
+              path="/"
+              component={
+                <Suspense fallback="loading…">
+                  <>
+                    <Profile></Profile>
+                    <Cards></Cards>
+                  </>
+                </Suspense>
+              }
+            />
+            <Route path="/signin">
+              <Suspense fallback="loading…">
+                <Login></Login>
+              </Suspense>
+            </Route>
+            <Route path="/signup">
+              <Suspense fallback="loading…">
+                <Register></Register>
+              </Suspense>
+            </Route>
+          </Switch>
+          <Suspense fallback="loading…">
+            <Cards />
+          </Suspense>
 
-        <Suspense fallback="loading…">
-          <Footer></Footer>
-        </Suspense>
+          <Suspense fallback="loading…">
+            <Footer></Footer>
+          </Suspense>
+        </div>
       </div>
     </BrowserRouter>
   );
