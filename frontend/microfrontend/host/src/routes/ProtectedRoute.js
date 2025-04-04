@@ -1,13 +1,25 @@
-import React from 'react';
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRoute = ({ component: Component, ...props  }) => {
+const ProtectedRoute = ({ component: Component, render, jwt, ...props }) => {
+  console.log("jwt", jwt);
+
   return (
-    <Route exact>
-      {
-        () => props.loggedIn ? <Component {...props} /> : <Redirect to="./signin" />
+    <Route
+      {...props}
+      render={(routeProps) =>
+        jwt ? (
+          render ? (
+            render(routeProps)
+          ) : (
+            <Component {...routeProps} />
+          )
+        ) : (
+          <Redirect to="/signin" />
+        )
       }
-    </Route>
-)}
+    />
+  );
+};
 
 export default ProtectedRoute;

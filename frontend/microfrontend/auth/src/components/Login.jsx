@@ -1,20 +1,32 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import "./login/login.css";
 import "./auth-form/auth-form.css";
+import { login } from "./utils/auth";
 
 export default function Login() {
+  const history = useHistory();
   // TODO: дописать
-  const onLogin = () => {};
+
+  // Добавили onLogin в UserLogin и отправляем полученный jwt с помощью события
+  function onLogin(email, password) {
+    
+    console.log("login works");
+    dispatchEvent(
+      new CustomEvent("jwt-change", {
+        detail: login(email, password),
+      })
+    );
+    history.push("/");
+  }
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   function handleSubmit(e) {
+    console.log(email, password);
     e.preventDefault();
-    const userData = {
-      email,
-      password,
-    };
-    onLogin(userData);
+    onLogin(email, password);
   }
   return (
     <div className="auth-form">
