@@ -10,13 +10,14 @@ export default function Login() {
 
   // Добавили onLogin в UserLogin и отправляем полученный jwt с помощью события
   function onLogin(email, password) {
-    
+
     console.log("login works");
     dispatchEvent(
       new CustomEvent("jwt-change", {
         detail: login(email, password),
       })
     );
+    console.log("login works");
     history.push("/");
   }
 

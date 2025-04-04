@@ -18,3 +18,15 @@ export const login = (email, password) => {
     return data;
   })
 };
+
+export const register = (email, password) => {
+  return fetch(`${BASE_URL}/signup`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({email, password})
+  })
+  .then(getResponse)
+};
