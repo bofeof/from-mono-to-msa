@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Switch, Link, useHistory } from "react-router-dom";
-import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
+import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 import logoPath from "../../../shared/styles/images/logo.svg";
 
 import "./index.css";
@@ -34,7 +34,7 @@ export default function Header() {
         <Route exact path="/">
           <div className="header__wrapper">
             <p className="header__user">
-              {currentUser ? currentUser?.email : "test@test.ru"}
+              {currentUser?.email || "john.doe@jd.com"}
             </p>
             <button className="header__logout" onClick={handleSignOut}>
               Выйти

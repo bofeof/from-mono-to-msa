@@ -27,7 +27,7 @@ export default function Profile() {
         .catch((err) => {
           console.log(err);
         });
-    }, [setCurrentUser]);
+    }, []);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);

@@ -52,7 +52,7 @@ module.exports = {
       name: "header",
       filename: "remoteEntry.js",
       remotes: {
-        shared: "shared@http://localhost:8080/remoteEntry.js"
+        sharedLib: "host@http://localhost:8080/remoteEntry.js"
       },
       exposes: {
         "./Header": "./src/components/Header.jsx",

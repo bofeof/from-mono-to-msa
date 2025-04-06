@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
+import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 import ImagePopup from "./ImagePopup";
 import api from "./utils/api";
 import "./index.css";

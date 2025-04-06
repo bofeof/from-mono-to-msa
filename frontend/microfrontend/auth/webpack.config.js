@@ -44,7 +44,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "auth",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+        sharedLib: "host@http://localhost:8080/remoteEntry.js"
+      },
       exposes: {
         "./Register": "./src/components/Register.jsx",
         "./Login": "./src/components/Login.jsx",
