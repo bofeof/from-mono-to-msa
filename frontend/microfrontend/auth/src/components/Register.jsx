@@ -8,7 +8,7 @@ import "./auth-form/auth-form.css";
 export default function Register() {
   const history = useHistory();
 
-  // TODO: дописать
+   // TODO:дописать попап и информированием
   function onRegister({ email, password }) {
     register(email, password)
       .then((res) => {

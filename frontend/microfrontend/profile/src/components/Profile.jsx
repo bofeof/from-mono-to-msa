@@ -1,38 +1,130 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
 import defailtUserPic from "../../../shared/styles/images/avatar.jpg";
+
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
+
+import api from "./utils/api";
 
 import "./index.css";
 
 export default function Profile() {
-  const onEditProfile = () => {};
-  const onAddPlace = () => {};
-  const onEditAvatar = () => {};
+  const { currentUser, setCurrentUser, cards, setCards } =
+    useContext(CurrentUserContext);
+
+    useEffect(() => {
+      api.getUserInfo()
+        .then((res) => {
+          console.log('пользователь:', res)
+          setCurrentUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, [setCurrentUser]);
+
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+
+  function closeAllPopups() {
+    setIsEditProfilePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+  }
+
+  function handleEditProfileClick() {
+    // TODO: дописать логику
+    console.log("edit profile popup");
+    setIsEditProfilePopupOpen(true);
+  }
+
+  function handleEditAvatarClick() {
+    // TODO: дописать логику
+    console.log("edit avatar popup");
+    setIsEditAvatarPopupOpen(true);
+  }
+
+  function handleAddPlaceClick() {
+    // TODO: дописать логику
+    console.log("add card popup");
+    setIsAddPlacePopupOpen(true);
+  }
+
+  function handleUpdateUser(userUpdate) {
+    api
+      .setUserInfo(userUpdate)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleAddPlaceSubmit(newCard) {
+    api
+      .addCard(newCard)
+      .then((newCardFull) => {
+        setCards([newCardFull, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleUpdateAvatar(avatarUpdate) {
+    api
+      .setUserAvatar(avatarUpdate)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   const imageStyleDefault = { backgroundImage: `url(${defailtUserPic})` };
 
   return (
-    <section className="profile page__section">
-      <div
-        className="profile__image"
-        onClick={onEditAvatar}
-        style={CurrentUserContext.avatar || imageStyleDefault}></div>
-      <div className="profile__info">
-        <h1 className="profile__title">
-          {CurrentUserContext.name || "John Doe"}
-        </h1>
+    <>
+      <section className="profile page__section">
+        <div
+          className="profile__image"
+          onClick={handleEditAvatarClick}
+          style={currentUser?.avatar || imageStyleDefault}></div>
+        <div className="profile__info">
+          <h1 className="profile__title">{currentUser?.name || "John Doe"}</h1>
+          <button
+            className="profile__edit-button"
+            type="button"
+            onClick={handleEditProfileClick}></button>
+          <p className="profile__description">
+            {currentUser?.about || "about John Doe"}
+          </p>
+        </div>
         <button
-          className="profile__edit-button"
+          className="profile__add-button"
           type="button"
-          onClick={onEditProfile}></button>
-        <p className="profile__description">
-          {CurrentUserContext.about || "about John Doe"}
-        </p>
-      </div>
-      <button
-        className="profile__add-button"
-        type="button"
-        onClick={onAddPlace}></button>
-    </section>
+          onClick={handleAddPlaceClick}></button>
+      </section>
+
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onUpdateUser={handleUpdateUser}
+        onClose={closeAllPopups}
+      />
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onUpdateAvatar={handleUpdateAvatar}
+        onClose={closeAllPopups}
+      />
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onAddPlace={handleAddPlaceSubmit}
+        onClose={closeAllPopups}
+      />
+    </>
   );
 }

@@ -6,18 +6,24 @@ import { login } from "./utils/auth";
 
 export default function Login() {
   const history = useHistory();
-  // TODO: дописать
 
   // Добавили onLogin в UserLogin и отправляем полученный jwt с помощью события
+  // TODO:дописать попап и информированием
   function onLogin(email, password) {
+    const token = login(email, password)
+      .then((res) => res)
+      .catch((err) => {
+        console.log(err)
+        // setTooltipStatus("fail");
+        // setIsInfoToolTipOpen(true);
+      });
 
-    console.log("login works");
     dispatchEvent(
       new CustomEvent("jwt-change", {
-        detail: login(email, password),
+        detail: token,
       })
     );
-    console.log("login works");
+
     history.push("/");
   }
 

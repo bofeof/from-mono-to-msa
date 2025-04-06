@@ -2,6 +2,8 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
 const deps = require("./package.json").dependencies;
+const path = require("path");
+
 module.exports = {
   output: {
     publicPath: "http://localhost:8080/",
@@ -60,7 +62,8 @@ module.exports = {
         header: "header@http://localhost:8084/remoteEntry.js",
         profile: "profile@http://localhost:8085/remoteEntry.js",
       },
-      exposes: {},
+      exposes: {
+      },
       shared: {
         ...deps,
         react: {

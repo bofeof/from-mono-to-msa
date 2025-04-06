@@ -1,4 +1,22 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 
-// Объект контекста CurrentUserContext экспортируется из отдельного файла директории contexts
-export const CurrentUserContext = React.createContext();
+export const CurrentUserContext = createContext({
+  currentUser: null,
+  setCurrentUser: () => {},
+  jwt: null,
+  setJwt: () => {},
+  cards: [],
+  setCards: () => {},
+});
+
+export const CurrentUserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [cards, setCards] = useState([]);
+  const [jwt, setJwt] = useState('');
+
+  return (
+    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, cards, setCards, jwt, setJwt }}>
+      {children}
+    </CurrentUserContext.Provider>
+  );
+};

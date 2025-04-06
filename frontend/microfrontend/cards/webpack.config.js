@@ -2,6 +2,8 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
 const deps = require("./package.json").dependencies;
+const path = require("path");
+
 module.exports = {
   output: {
     publicPath: "http://localhost:8082/",
@@ -13,7 +15,7 @@ module.exports = {
 
   devServer: {
     port: 8082,
-    historyApiFallback: true, 
+    historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
@@ -55,7 +57,7 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        './Cards': './src/components/Cards.jsx'
+        "./Cards": "./src/components/Cards.jsx",
       },
       shared: {
         ...deps,

@@ -1,3 +1,4 @@
-@import url('../../shared/styles/vendor/normalize.css');
-@import url('../../shared/styles/vendor/fonts.css');
-@import url('../../shared/styles/page/page.css');
+@import url("../../shared/styles/vendor/normalize.css");
+@import url("../../shared/styles/vendor/fonts.css");
+@import url("../../shared/styles/page/page.css");
+@import url("../../shared/styles/content/content.css");

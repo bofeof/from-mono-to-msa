@@ -1,13 +1,16 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useContext } from "react";
 import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { checkToken } from "./utils/api";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
-import { CurrentUserContext } from "../../shared/contexts/CurrentUserContext";
+
+import {
+  CurrentUserProvider,
+  CurrentUserContext,
+} from "../../shared/contexts/CurrentUserContext";
 
 import "./index.css";
-
 
 const Header = lazy(() =>
   import("header/Header").catch(() => {
@@ -58,16 +61,11 @@ const Register = lazy(() =>
 );
 
 const App = () => {
-
   const history = useHistory();
 
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-
-  const [jwt, setJwt] = useState("");
+  const { jwt, setJwt } = useContext(CurrentUserContext);
 
   const handleJwtChange = (event) => {
-    // Эта функция получает нотификации о событиях изменения jwt
     setJwt(event.detail);
   };
 
@@ -76,16 +74,12 @@ const App = () => {
     return () => removeEventListener("jwt-change", handleJwtChange); // Этот код удаляет подписку на нотификации о событиях изменения localStorage, когда в ней пропадает необходимость
   }, []);
 
-  // при монтировании App описан эффект, проверяющий наличие токена и его валидности
   React.useEffect(() => {
-
     const token = localStorage.getItem("jwt");
-
     if (token) {
       checkToken(token)
         .then((res) => {
-          // setEmail(res.data.email);
-          // setIsLoggedIn(true);
+          setJwt(token);
           history.push("/");
         })
         .catch((err) => {
@@ -107,40 +101,42 @@ const App = () => {
   );
 
   return (
-    <CurrentUserContext.Provider
-      value={{ currentUser, jwt, cards, setJwt, setCurrentUser, setCards }}>
-      <BrowserRouter>
-        <div className="page">
-          <div className="page__content">
-            <Suspense fallback="loading…">
-              <Header></Header>
-            </Suspense>
+    <div className="page">
+      <div className="page__content">
+        <Suspense fallback="loading…">
+          <Header></Header>
+        </Suspense>
 
-            <Switch>
-              <ProtectedRoute exact path="/" jwt={jwt} component={HomePage} />;
-              <Route path="/signin">
-                <Suspense fallback="loading…">
-                  <Login></Login>
-                </Suspense>
-              </Route>
-              <Route path="/signup">
-                <Suspense fallback="loading…">
-                  <Register></Register>
-                </Suspense>
-              </Route>
-            </Switch>
-            <Suspense fallback="loading…">
-              <Cards />
-            </Suspense>
+        <main className="content">
+          <Switch>
+            <ProtectedRoute exact path="/" jwt={jwt} component={HomePage} />;
+            <Route path="/signin">
+              <Suspense fallback="loading…">
+                <Login></Login>
+              </Suspense>
+            </Route>
+            <Route path="/signup">
+              <Suspense fallback="loading…">
+                <Register></Register>
+              </Suspense>
+            </Route>
+          </Switch>
+        </main>
 
-            <Suspense fallback="loading…">
-              <Footer></Footer>
-            </Suspense>
-          </div>
-        </div>
-      </BrowserRouter>
-    </CurrentUserContext.Provider>
+        <Suspense fallback="loading…">
+          <Footer></Footer>
+        </Suspense>
+      </div>
+    </div>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const Root = () => (
+  <BrowserRouter>
+    <CurrentUserProvider>
+      <App />
+    </CurrentUserProvider>
+  </BrowserRouter>
+);
+
+ReactDOM.render(<Root />, document.getElementById("app"));
