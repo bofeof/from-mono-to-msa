@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
-import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
+import { CurrentUserContext } from "sharedLib/CurrentUserContext";
+
 import defailtUserPic from "../../../shared/styles/images/avatar.jpg";
 
 import EditProfilePopup from "./EditProfilePopup";
@@ -11,6 +12,9 @@ import api from "./utils/api";
 import "./index.css";
 
 export default function Profile() {
+  const context = useContext(CurrentUserContext);
+  console.log('Контекст в ремоуте:', context);
+
   const { currentUser, setCurrentUser, cards, setCards } =
     useContext(CurrentUserContext);
 
@@ -85,15 +89,13 @@ export default function Profile() {
       .catch((err) => console.log(err));
   }
 
-  const imageStyleDefault = { backgroundImage: `url(${defailtUserPic})` };
-
   return (
     <>
       <section className="profile page__section">
         <div
           className="profile__image"
           onClick={handleEditAvatarClick}
-          style={currentUser?.avatar || imageStyleDefault}></div>
+          style= {{ backgroundImage: `url(${currentUser?.avatar || defailtUserPic})` }}></div>
         <div className="profile__info">
           <h1 className="profile__title">{currentUser?.name || "John Doe"}</h1>
           <button

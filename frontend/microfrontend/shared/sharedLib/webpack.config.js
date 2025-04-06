@@ -2,11 +2,9 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
 const deps = require("./package.json").dependencies;
-const path = require("path");
-
 module.exports = {
   output: {
-    publicPath: "http://localhost:8082/",
+    publicPath: "http://localhost:8080/",
   },
 
   resolve: {
@@ -14,7 +12,7 @@ module.exports = {
   },
 
   devServer: {
-    port: 8082,
+    port: 8080,
     historyApiFallback: true,
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -41,25 +39,19 @@ module.exports = {
           loader: "babel-loader",
         },
       },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        type: "asset/resource",
-        generator: {
-          filename: "images/[hash][ext][query]",
-        },
-      },
     ],
   },
 
   plugins: [
     new ModuleFederationPlugin({
-      name: "cards",
+      name: "sharedLib",
       filename: "remoteEntry.js",
-      remotes: {
-        sharedLib: "host@http://localhost:8080/remoteEntry.js"
-      },
+      remotes: {},
       exposes: {
-        "./Cards": "./src/components/Cards.jsx",
+        exposes: {
+          "./CurrentUserContext": "./src/contexts/CurrentUserContext",
+          "./CurrentUserProvider": "./src/contexts/CurrentUserContext",
+        },
       },
       shared: {
         ...deps,
@@ -70,6 +62,10 @@ module.exports = {
         "react-dom": {
           singleton: true,
           requiredVersion: deps["react-dom"],
+        },
+        "react-router-dom": {
+          singleton: true,
+          requiredVersion: deps["react-router-dom"],
         },
         crossOriginLoading: "anonymous",
       },

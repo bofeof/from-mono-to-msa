@@ -5,10 +5,12 @@ import { checkToken } from "./utils/api";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-import {
-  CurrentUserProvider,
-  CurrentUserContext,
-} from "../../shared/contexts/CurrentUserContext";
+// import {
+//   CurrentUserProvider,
+//   CurrentUserContext,
+// } from "../../shared/contexts/CurrentUserContext";
+
+import { CurrentUserContext, CurrentUserProvider } from "sharedLib/CurrentUserContext";
 
 import "./index.css";
 

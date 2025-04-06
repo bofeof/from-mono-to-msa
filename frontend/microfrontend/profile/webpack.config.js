@@ -53,7 +53,9 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "profile",
       filename: "remoteEntry.js",
-      remotes: {},
+      remotes: {
+        sharedLib: "host@http://localhost:8080/remoteEntry.js"
+      },
       exposes: {
         "./Profile": "./src/components/Profile.jsx",
       },
