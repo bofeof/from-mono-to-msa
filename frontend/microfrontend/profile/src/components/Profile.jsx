@@ -12,22 +12,23 @@ import api from "./utils/api";
 import "./index.css";
 
 export default function Profile() {
-  const context = useContext(CurrentUserContext);
-  console.log('Контекст в ремоуте:', context);
-
   const { currentUser, setCurrentUser, cards, setCards } =
     useContext(CurrentUserContext);
 
-    useEffect(() => {
-      api.getUserInfo()
-        .then((res) => {
-          console.log('пользователь:', res)
+  useEffect(() => {
+    console.log("restart useeffects");
+    api
+      .getUserInfo()
+      .then((res) => {
+        if (JSON.stringify(res) !== JSON.stringify(currentUser)) {
           setCurrentUser(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, []);
+        }
+        console.log("пользователь:", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
@@ -95,7 +96,9 @@ export default function Profile() {
         <div
           className="profile__image"
           onClick={handleEditAvatarClick}
-          style= {{ backgroundImage: `url(${currentUser?.avatar || defailtUserPic})` }}></div>
+          style={{
+            backgroundImage: `url(${currentUser?.avatar || defailtUserPic})`,
+          }}></div>
         <div className="profile__info">
           <h1 className="profile__title">{currentUser?.name || "John Doe"}</h1>
           <button

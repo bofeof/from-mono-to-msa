@@ -10,7 +10,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 //   CurrentUserContext,
 // } from "../../shared/contexts/CurrentUserContext";
 
-import { CurrentUserContext, CurrentUserProvider } from "sharedLib/CurrentUserContext";
+import {
+  CurrentUserContext,
+  CurrentUserProvider,
+} from "sharedLib/CurrentUserContext";
 
 import "./index.css";
 
@@ -65,7 +68,7 @@ const Register = lazy(() =>
 const App = () => {
   const history = useHistory();
 
-  const { jwt, setJwt } = useContext(CurrentUserContext);
+  const { jwt, setJwt, email, setEmail } = useContext(CurrentUserContext);
 
   const handleJwtChange = (event) => {
     setJwt(event.detail);
@@ -81,6 +84,8 @@ const App = () => {
     if (token) {
       checkToken(token)
         .then((res) => {
+          console.log(res);
+          setEmail(res.data.email);
           setJwt(token);
           history.push("/");
         })

@@ -14,8 +14,10 @@ export default function Cards() {
     api
       .getCardList()
       .then((res) => {
-        console.log("карточки", res);
-        setCards(res);
+        const areEqual = JSON.stringify(res) === JSON.stringify(cards);
+        if (!areEqual) {
+          setCards(res);
+        }
       })
       .catch((err) => console.log(err));
   }, []);

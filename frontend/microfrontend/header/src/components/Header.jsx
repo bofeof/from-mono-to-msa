@@ -8,7 +8,7 @@ import "./index.css";
 // В корневом компоненте App описаны обработчики: onRegister, onLogin и onSignOut. Эти обработчики переданы в соответствующие компоненты: Register.js, Login.js, Header.js
 export default function Header() {
   
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser, email } = useContext(CurrentUserContext);
 
   const history = useHistory();
 
@@ -34,7 +34,7 @@ export default function Header() {
         <Route exact path="/">
           <div className="header__wrapper">
             <p className="header__user">
-              {currentUser?.email || "john.doe@jd.com"}
+              {email || "john.doe@jd.com"}
             </p>
             <button className="header__logout" onClick={handleSignOut}>
               Выйти

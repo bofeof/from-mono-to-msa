@@ -61,10 +61,10 @@ module.exports = {
         footer: "footer@http://localhost:8083/remoteEntry.js",
         header: "header@http://localhost:8084/remoteEntry.js",
         profile: "profile@http://localhost:8085/remoteEntry.js",
-        sharedLib: "host@http://localhost:8080/remoteEntry.js"
+        sharedLib: "sharedLib@http://localhost:8090/remoteEntry.js"
       },
       exposes: {
-        "./CurrentUserContext": "../shared/sharedLib/src/contexts/CurrentUserContext",
+        // "./CurrentUserContext": "../shared/sharedLib/src/contexts/CurrentUserContext",
       },
       shared: {
         ...deps,

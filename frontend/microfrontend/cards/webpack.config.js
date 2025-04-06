@@ -56,7 +56,7 @@ module.exports = {
       name: "cards",
       filename: "remoteEntry.js",
       remotes: {
-        sharedLib: "host@http://localhost:8080/remoteEntry.js"
+        sharedLib: "sharedLib@http://localhost:8090/remoteEntry.js",
       },
       exposes: {
         "./Cards": "./src/components/Cards.jsx",
