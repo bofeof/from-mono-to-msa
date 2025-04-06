@@ -8,7 +8,7 @@ import "./index.css";
 // В корневом компоненте App описаны обработчики: onRegister, onLogin и onSignOut. Эти обработчики переданы в соответствующие компоненты: Register.js, Login.js, Header.js
 export default function Header() {
   
-  const { currentUser, setCurrentUser, email } = useContext(CurrentUserContext);
+  const { setCurrentUser, email } = useContext(CurrentUserContext);
 
   const history = useHistory();
 

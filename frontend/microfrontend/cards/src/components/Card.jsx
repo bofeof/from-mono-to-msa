@@ -1,5 +1,5 @@
 import React from "react";
-import { CurrentUserContext } from "../../../shared/contexts/CurrentUserContext";
+import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 
 import "./card/card.css";
 

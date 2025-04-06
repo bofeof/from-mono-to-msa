@@ -1,6 +1,6 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
-import { CurrentUserContext } from './../../../shared/contexts/CurrentUserContext';
+import { CurrentUserContext } from 'sharedLib/CurrentUserContext';
 import './popup/popup.css'
 
 function EditProfilePopup({ isOpen, onUpdateUser, onClose }) {

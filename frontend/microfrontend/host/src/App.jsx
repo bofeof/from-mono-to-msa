@@ -5,11 +5,6 @@ import { checkToken } from "./utils/api";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-// import {
-//   CurrentUserProvider,
-//   CurrentUserContext,
-// } from "../../shared/contexts/CurrentUserContext";
-
 import {
   CurrentUserContext,
   CurrentUserProvider,
@@ -68,7 +63,7 @@ const Register = lazy(() =>
 const App = () => {
   const history = useHistory();
 
-  const { jwt, setJwt, email, setEmail } = useContext(CurrentUserContext);
+  const { jwt, setJwt, setEmail } = useContext(CurrentUserContext);
 
   const handleJwtChange = (event) => {
     setJwt(event.detail);
