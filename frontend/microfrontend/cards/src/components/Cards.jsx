@@ -1,13 +1,36 @@
 import React, { useContext, useEffect } from "react";
-import { CurrentUserContext } from "sharedLib/CurrentUserContext";
+// import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 import ImagePopup from "./ImagePopup";
 import api from "./utils/api";
 import "./index.css";
 import Card from "./Card";
 
-export default function Cards() {
-  const [selectedCard, setSelectedCard] = React.useState(null);
+  // временное решение, чтобы модуль не падал без подключенного контекста
+  let CurrentUserContext;
+  try {
+    CurrentUserContext =
+      require("sharedLib/CurrentUserContext").CurrentUserContext;
+  } catch (e) {
+    debugger
+    console.warn("CurrentUserContext не найден, будет использован fallback.");
+    CurrentUserContext = React.createContext({
+      currentUser: null,
+      cards: [],
+      setCards: () => {},
+    });
+  }
 
+export default function Cards() {
+
+  if (CurrentUserContext === undefined) {
+    CurrentUserContext = React.createContext({
+      currentUser: null,
+      cards: [],
+      setCards: () => {},
+    });
+  }
+  
+  const [selectedCard, setSelectedCard] = React.useState(null);
   const { currentUser, cards, setCards } = useContext(CurrentUserContext);
 
   useEffect(() => {
@@ -27,9 +50,9 @@ export default function Cards() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card?.likes?.some((i) => i._id === currentUser._id);
     api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .changeLikeCardStatus(card?._id, !isLiked)
       .then((newCard) => {
         setCards((cards) =>
           cards.map((c) => (c._id === card._id ? newCard : c))
@@ -40,7 +63,7 @@ export default function Cards() {
 
   function handleCardDelete(card) {
     api
-      .removeCard(card._id)
+      .removeCard(card?._id)
       .then(() => {
         setCards((cards) => cards.filter((c) => c._id !== card._id));
       })
@@ -58,7 +81,7 @@ export default function Cards() {
         <ul className="places__list">
           {cards.map((card) => (
             <Card
-              key={card._id}
+              key={card?._id}
               card={card}
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}

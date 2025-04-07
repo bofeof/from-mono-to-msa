@@ -5,12 +5,56 @@ import { checkToken } from "./utils/api";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
-import {
-  CurrentUserContext,
-  CurrentUserProvider,
-} from "sharedLib/CurrentUserContext";
+// import {
+//   CurrentUserContext,
+//   CurrentUserProvider,
+// } from "sharedLib/CurrentUserContext";
 
 import "./index.css";
+
+let CurrentUserContext;
+let CurrentUserProvider;
+
+try {
+  CurrentUserProvider = require("sharedLib/CurrentUserContext").CurrentUserProvider;
+  CurrentUserContext = require("sharedLib/CurrentUserContext").CurrentUserContext;
+} catch (e) {
+  console.warn("CurrentUserContext не найден, будет использован fallback.");
+
+  CurrentUserContext = React.createContext({
+    currentUser: null,
+    setCurrentUser: () => {},
+    jwt: "",
+    setJwt: () => {},
+    cards: [],
+    setCards: () => {},
+    email: "",
+    setEmail: () => {},
+  });
+
+  CurrentUserProvider = ({ children }) => {
+    const [jwt, setJwt] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [currentUser, setCurrentUser] = React.useState(null);
+    const [cards, setCards] = React.useState([]);
+
+    return (
+      <CurrentUserContext.Provider
+        value={{
+          jwt,
+          setJwt,
+          email,
+          setEmail,
+          currentUser,
+          setCurrentUser,
+          cards,
+          setCards,
+        }}>
+        {children}
+      </CurrentUserContext.Provider>
+    );
+  };
+}
 
 const Header = lazy(() =>
   import("header/Header").catch(() => {
@@ -62,6 +106,19 @@ const Register = lazy(() =>
 
 const App = () => {
   const history = useHistory();
+
+  if (CurrentUserContext === undefined) {
+    CurrentUserContext = React.createContext({
+      currentUser: null,
+      setCurrentUser: () => {},
+      jwt: "",
+      setJwt: () => {},
+      cards: [],
+      setCards: () => {},
+      email: "",
+      setEmail: () => {},
+    });
+  }
 
   const { jwt, setJwt, setEmail } = useContext(CurrentUserContext);
 

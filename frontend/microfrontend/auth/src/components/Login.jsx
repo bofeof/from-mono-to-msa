@@ -7,7 +7,6 @@ import { login } from "./utils/auth";
 export default function Login() {
   const history = useHistory();
 
-  // Добавили onLogin в UserLogin и отправляем полученный jwt с помощью события
   // TODO:дописать попап и информированием
   function onLogin(email, password) {
     const token = login(email, password)

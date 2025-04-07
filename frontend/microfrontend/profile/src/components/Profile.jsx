@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { CurrentUserContext } from "sharedLib/CurrentUserContext";
+// import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 
 import defailtUserPic from "../../../shared/styles/images/avatar.jpg";
 
@@ -11,7 +11,31 @@ import api from "./utils/api";
 
 import "./index.css";
 
+// временное решение, чтобы модуль не падал без подключенного контекста
+let CurrentUserContext;
+try {
+  CurrentUserContext =
+    require("sharedLib/CurrentUserContext").CurrentUserContext;
+} catch (e) {
+  console.warn("CurrentUserContext не найден, будет использован fallback.");
+  CurrentUserContext = React.createContext({
+    currentUser: null,
+    setCurrentUser: () => {},
+    cards: [],
+    setCards: () => {},
+  });
+}
+
 export default function Profile() {
+  if (CurrentUserContext === undefined) {
+    CurrentUserContext = React.createContext({
+      currentUser: null,
+      setCurrentUser: () => {},
+      cards: [],
+      setCards: () => {},
+    });
+  }
+
   const { currentUser, setCurrentUser, cards, setCards } =
     useContext(CurrentUserContext);
 

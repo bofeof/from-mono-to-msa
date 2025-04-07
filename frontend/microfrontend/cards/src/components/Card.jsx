@@ -1,10 +1,21 @@
 import React from "react";
-import { CurrentUserContext } from "sharedLib/CurrentUserContext";
-
+// import { CurrentUserContext } from "sharedLib/CurrentUserContext";
 import "./card/card.css";
 
+// временное решение, чтобы модуль не падал без подключенного контекста
+let CurrentUserContext;
+try {
+  CurrentUserContext =
+    require("sharedLib/CurrentUserContext").CurrentUserContext;
+} catch (e) {
+  console.warn("CurrentUserContext не найден, будет использован fallback.");
+  CurrentUserContext = React.createContext({
+    currentUser: null,
+  });
+}
+
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
-  const cardStyle = { backgroundImage: `url(${card.link})` };
+  const cardStyle = { backgroundImage: `url(${card?.link})` };
 
   function handleClick() {
     onCardClick(card);
